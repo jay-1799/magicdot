@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  mongodb:
+    image: '9574872248/mongo'
+    ports:
+      - '27017:27017'
+    # volumes:
+      # -data:/data/db
+  code:
+    image: '9574872248/code'
+    ports:
+      - '3000:3000'
+    depends_on:
+      - mongodb
