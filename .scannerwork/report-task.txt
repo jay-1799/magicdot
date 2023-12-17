@@ -1,0 +1,6 @@
+projectKey=magicdot
+serverUrl=http://44.208.26.226:9000
+serverVersion=9.9.3.79811
+dashboardUrl=http://44.208.26.226:9000/dashboard?id=magicdot
+ceTaskId=AYx4LLaWKuSh4k0un8AN
+ceTaskUrl=http://44.208.26.226:9000/api/ce/task?id=AYx4LLaWKuSh4k0un8AN
