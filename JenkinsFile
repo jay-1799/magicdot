@@ -60,6 +60,8 @@ pipeline {
                         git config user.email "patelj1799@gmail.com"
                         git config user.name "jay-1799"
                         BUILD_NUMBER=${BUILD_NUMBER}
+                        git add .
+                        git diff-index --quiet HEAD || git commit -m "Committing changes"
                         sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" dep/deployment.yaml
                         git add dep/deployment.yaml
                         git commit -m "Update deployment image to version ${BUILD_NUMBER}"
