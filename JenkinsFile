@@ -130,30 +130,28 @@ pipeline {
         }
 
         stage('Update Deployment File') {
-            environment {
-                GIT_REPO_NAME = "cicd"
-                GIT_USER_NAME = "jay-1799"
-            }
-
-            steps {
+    environment {
+        GIT_REPO_NAME = "cicd"
+        GIT_USER_NAME = "jay-1799"
+    }
+    steps {
+        withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+            script {
                 echo 'Updating deployment file...'
-                
-                script {
-                    git config user.email "patelj1799@gmail.com"
-                    git config user.name "jay-1799"
-                    
-                    echo 'Checking for changes...'
-                    sh 'git diff-index --quiet HEAD || git commit -am "Committing changes"'
-                    
-                    sh "sed -i 's/replaceImageTag/${BUILD_NUMBER}/g' dep/deployment.yaml"
-                    
-                    echo 'Committing and pushing changes...'
-                    sh """
-                        git add .
-                        git commit -m "Update deployment image to version ${BUILD_NUMBER}"
-                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
-                    """
-                }
+
+                git config user.email "patelj1799@gmail.com"
+                git config user.name "jay-1799"
+
+                echo 'Checking for changes...'
+                sh 'git diff-index --quiet HEAD || git commit -am "Committing changes"'
+
+                sh '''
+                    sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" dep/deployment.yaml
+                    git add .
+                    git add dep/deployment.yaml
+                    git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                    git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
+                '''
             }
         }
     }
