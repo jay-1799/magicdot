@@ -20,7 +20,7 @@ spec:
         - name: database
           image: 9574872248/mongo
         - name: backend
-          image: 9574872248/code:replaceImageTag
+          image: 9574872248/code:21
           ports:
             - containerPort: 3000
       # volumes:
