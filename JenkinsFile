@@ -51,7 +51,7 @@ pipeline {
         
         stage('Update Deployment File') {
             environment {
-                GIT_REPO_NAME = "magicdot-solar"
+                GIT_REPO_NAME = "cicd"
                 GIT_USER_NAME = "jay-1799"
             }
             steps {
