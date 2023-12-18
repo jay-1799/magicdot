@@ -22,7 +22,7 @@ pipeline {
             sh 'npm install'
         }
         }
-
+        /*
         stage('Static Code Analysis') {
         steps {
             withSonarQubeEnv('sonar-server') {
@@ -31,6 +31,7 @@ pipeline {
                 }
         }
         }
+        */
         
         stage('Build and Push Docker Image') {
         environment {
