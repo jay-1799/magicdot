@@ -1,0 +1,73 @@
+pipeline {
+ agent any
+    tools{
+        jdk 'jdk17'
+        nodejs 'node16'
+    }
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
+    
+  
+    stages {
+        stage('Checkout') {
+        steps {
+            sh 'echo passed'
+            //git branch: 'master', url: 'https://github.com/jay-1799/magicdot-solar/tree/master.git'
+        }
+        }
+        
+        stage('Install Dependencies') {
+        steps {
+            sh 'npm install'
+        }
+        }
+        /*
+        stage('Static Code Analysis') {
+        steps {
+            withSonarQubeEnv('sonar-server') {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=magicdot \
+                    -Dsonar.projectKey=magicdot'''
+                }
+        }
+        }
+        */
+        
+        stage('Build and Push Docker Image') {
+        environment {
+            DOCKER_IMAGE = "9574872248/code:${BUILD_NUMBER}"
+            // DOCKERFILE_LOCATION = "Dockerfile"
+            REGISTRY_CREDENTIALS = credentials('docker-cred')
+        }
+        steps {
+            script {
+                sh 'docker build -t ${DOCKER_IMAGE} .'
+                def dockerImage = docker.image("${DOCKER_IMAGE}")
+                docker.withRegistry('https://index.docker.io/v1/', "docker-cred") {
+                    dockerImage.push()
+                }
+            }
+        }
+        }
+        
+        stage('Update Deployment File') {
+            environment {
+                GIT_REPO_NAME = "cicd"
+                GIT_USER_NAME = "jay-1799"
+            }
+            steps {
+                withCredentials([string(credentialsId: 'github', variable: 'GITHUB_TOKEN')]) {
+                    sh """
+                        git config user.email "patelj1799@gmail.com"
+                        git config user.name "jay-1799"
+                        BUILD_NUMBER=${BUILD_NUMBER}
+                        sed -i "s/\\(image: 9574872248\\/code:\\).*/\\1\${BUILD_NUMBER}/g" dep/deployment.yaml
+                        git add .
+                        git commit -m "Update deployment image to version ${BUILD_NUMBER}"
+                        git push https://${GITHUB_TOKEN}@github.com/${GIT_USER_NAME}/${GIT_REPO_NAME} HEAD:master
+                    """
+                }
+            }
+        }
+    }
+    }

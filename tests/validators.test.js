@@ -51,4 +51,3 @@ test("Should return string value of valid Message", () => {
 test("Should return string value of valid Password", () => {
   expect(validators.validatePassword("Test@123")).toBe("Test@123");
 });
-

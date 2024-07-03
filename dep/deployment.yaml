@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: second-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: second-app
+  template:
+    metadata:
+      labels:
+        app: second-app
+    spec:
+      containers:
+        
+          # volumeMounts:
+          #   - mountPath: /app
+          #     name: database-volume
+        - name: database
+          image: 9574872248/mongo
+        - name: backend
+          image: 9574872248/code:39
+          ports:
+            - containerPort: 3000
+      # volumes:
+      #   - name: database-volume
+      #     emptyDir: {}
