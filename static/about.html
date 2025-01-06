@@ -1,26 +1,146 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Magicdot solar - About</title>
-    <meta name="description" content="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - MagicDot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body>
-    <!--[if lt IE 7]>
-      <p class="browsehappy">
-        You are using an <strong>outdated</strong> browser. Please
-        <a href="#">upgrade your browser</a> to improve your experience.
-      </p>
-    <![endif]-->
-    <h1>About Magicdot Solar</h1>
+    <!-- Navigation -->
+    <nav
+      class="bg-white px-2 sm:px-4 py-2.5 fixed w-full z-20 top-0 left-0 border-b border-gray-200"
+    >
+      <div
+        class="container flex flex-wrap items-center justify-between mx-auto"
+      >
+        <a href="/" class="flex items-center">
+          <img src="../public/img/logo.svg" class="h-12 sm:h-9" alt="Logo" />
+          <span class="self-center text-xl font-semibold whitespace-nowrap"
+            >MagicDot</span
+          >
+        </a>
+        <div class="flex md:order-2">
+          <a href="/login"
+            ><button
+              type="button"
+              class="text-white bg-emerald-600 hover:bg-emerald-800 focus:ring-4 focus:outline-none focus:ring-emerald-300 font-medium rounded-lg text-md px-5 py-2.5 text-center mr-3 md:mr-0"
+            >
+              Sign In
+            </button></a
+          >
+        </div>
+        <div
+          class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
+          id="navbar-sticky"
+        >
+          <ul
+            class="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-md md:font-medium md:border-0 md:bg-white"
+          >
+            <li>
+              <a
+                href="/"
+                class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-emerald-700 md:p-0"
+                >Home</a
+              >
+            </li>
+            <li>
+              <a
+                href="/about"
+                class="block py-2 pl-3 pr-4 text-emerald-700 bg-emerald-700 rounded md:bg-transparent md:text-emerald-700 md:p-0"
+                aria-current="page"
+                >About</a
+              >
+            </li>
+            <li>
+              <a
+                href="/services"
+                class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-emerald-700 md:p-0"
+                >Services</a
+              >
+            </li>
+            <li>
+              <a
+                href="/projects"
+                class="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-emerald-700 md:p-0"
+                >Projects</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
 
-    <script src="" async defer></script>
+    <!-- About Us Content -->
+    <section
+      class="relative bg-[url('https://images.pexels.com/photos/2800845/pexels-photo-2800845.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')] bg-cover bg-center bg-no-repeat"
+    >
+      <div
+        class="absolute inset-0 bg-white/75 sm:bg-transparent sm:bg-gradient-to-r sm:from-white/95 sm:to-white/25"
+      ></div>
+      <div
+        class="relative mx-auto max-w-screen-xl px-4 py-32 sm:px-6 lg:h-screen lg:items-center lg:px-8"
+      >
+        <div class="max-w-xl text-center sm:text-left">
+          <h1 class="text-3xl font-extrabold sm:text-5xl">
+            About
+            <strong class="block font-extrabold text-emerald-600"
+              >MagicDot</strong
+            >
+          </h1>
+          <p class="mt-4 max-w-lg sm:text-xl sm:leading-relaxed">
+            Dedicated to providing innovative solar solutions that empower
+            businesses and individuals to reduce their carbon footprint and
+            embrace sustainable energy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-10 bg-gray-100 sm:py-16 lg:py-24">
+      <div class="max-w-5xl px-4 mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2
+            class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl"
+          >
+            Our Mission
+          </h2>
+          <p class="mt-3 text-xl leading-relaxed text-gray-600 md:mt-8">
+            Empowering communities through reliable, innovative, and sustainable
+            solar energy solutions.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="py-10 bg-white sm:py-16 lg:py-24">
+      <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div
+          class="grid items-center grid-cols-1 lg:grid-cols-2 gap-x-12 xl:gap-x-24 gap-y-12"
+        >
+          <div class="2xl:pr-16">
+            <h2
+              class="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl lg:leading-tight"
+            >
+              Why Choose Us?
+            </h2>
+            <p class="text-xl leading-relaxed text-gray-900 mt-9">
+              With over six years of expertise, MagicDot has delivered thousands
+              of successful projects, helping clients save on costs while
+              contributing to a sustainable future.
+            </p>
+          </div>
+          <img
+            class="rounded-lg"
+            src="https://images.pexels.com/photos/8853501/pexels-photo-8853501.jpeg?auto=compress&cs=tinysrgb&w=1600"
+            alt="Solar Panels"
+          />
+        </div>
+      </div>
+    </section>
+
+    <footer class="bg-gray-800 text-white text-center py-4">
+      <p>&copy; 2024 MagicDot. All Rights Reserved.</p>
+    </footer>
   </body>
 </html>
