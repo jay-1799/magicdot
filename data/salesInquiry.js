@@ -1,8 +1,64 @@
 const collections = require("../config/mongoCollections");
 const salesInquiry = collections.salesInquiry;
+const users = collections.users;
 const ObjectId = require("mongodb").ObjectId;
 const validators = require("../validators");
 const util = require("util");
+
+// const newInquiry = async (
+//   firstName,
+//   lastName,
+//   email,
+//   phoneNumber,
+//   subject,
+//   message,
+//   files
+// ) => {
+//   firstName = validators.validateName(firstName, "first name");
+//   lastName = validators.validateName(lastName, "last name");
+//   email = validators.validateEmail(email);
+//   phoneNumber = validators.validatePhone(phoneNumber);
+//   subject = validators.validateSubject(subject);
+//   message = validators.validateMessage(message);
+//   let imageArray = new Array();
+//   if (files) {
+//     const { images } = files;
+//     if (Array.isArray(images)) {
+//       imageArray = images.map(
+//         (image) =>
+//           `data:${image.mimetype};base64,${image.data.toString("base64")}`
+//       );
+//     } else {
+//       imageArray.push(
+//         `data:${images.mimetype};base64,${images.data.toString("base64")}`
+//       );
+//     }
+//   }
+
+//   const inquiry = {
+//     customerId: "",
+//     customerName: `${firstName} ${lastName}`,
+//     customerEmail: email,
+//     customerPhoneNumber: phoneNumber,
+//     status: true,
+//     subject: subject,
+//     message: message,
+//     initialImages: imageArray,
+//     salesRepresentativeAssigned: "",
+//     messages: [],
+//     isProjectCreated: false,
+//   };
+
+//   const salesInquiryCollection = await salesInquiry();
+//   const insertInquiryInfo = await salesInquiryCollection.insertOne(inquiry);
+//   if (!insertInquiryInfo.acknowledged || !insertInquiryInfo.insertedId)
+//     throw { status: 500, message: "Could not create new inquiry" };
+//   const insertedInquiry = await getInquiryById(
+//     insertInquiryInfo.insertedId.toString()
+//   );
+
+//   return insertedInquiry;
+// };
 
 const newInquiry = async (
   firstName,
@@ -13,13 +69,16 @@ const newInquiry = async (
   message,
   files
 ) => {
+  // Validate inputs
   firstName = validators.validateName(firstName, "first name");
   lastName = validators.validateName(lastName, "last name");
   email = validators.validateEmail(email);
   phoneNumber = validators.validatePhone(phoneNumber);
   subject = validators.validateSubject(subject);
   message = validators.validateMessage(message);
-  let imageArray = new Array();
+
+  // Process files if provided
+  let imageArray = [];
   if (files) {
     const { images } = files;
     if (Array.isArray(images)) {
@@ -34,6 +93,7 @@ const newInquiry = async (
     }
   }
 
+  // Create the inquiry object
   const inquiry = {
     customerId: "",
     customerName: `${firstName} ${lastName}`,
@@ -48,14 +108,29 @@ const newInquiry = async (
     isProjectCreated: false,
   };
 
+  // Insert inquiry into the collection
   const salesInquiryCollection = await salesInquiry();
   const insertInquiryInfo = await salesInquiryCollection.insertOne(inquiry);
-  if (!insertInquiryInfo.acknowledged || !insertInquiryInfo.insertedId)
+  if (!insertInquiryInfo.acknowledged || !insertInquiryInfo.insertedId) {
     throw { status: 500, message: "Could not create new inquiry" };
-  const insertedInquiry = await getInquiryById(
-    insertInquiryInfo.insertedId.toString()
+  }
+  const inquiryId = insertInquiryInfo.insertedId.toString();
+
+  // Update the user's `customerInquiry` field
+  const userCollection = await users();
+  const updateCustomer = await userCollection.updateOne(
+    { email: email }, // Locate the user by email
+    { $set: { customerInquiry: inquiryId } } // Set the `customerInquiry` field
   );
 
+  if (!updateCustomer.acknowledged || !updateCustomer.matchedCount) {
+    throw { status: 500, message: "Could not update customer's inquiry field" };
+  }
+  const updatedCustomer = await userCollection.findOne({ email: email });
+  console.log("Updated Customer:", updatedCustomer);
+
+  // Retrieve and return the inserted inquiry
+  const insertedInquiry = await getInquiryById(inquiryId);
   return insertedInquiry;
 };
 

@@ -5,7 +5,7 @@ const projectsData = require("./data/project");
 const inventoryData = require("./data/inventory");
 const casual = require("casual");
 
-// generate 50 random inquiries with first name, last name, email, phone, subject and message
+// Generate 20 random inquiries
 casual.define("user", function () {
   return {
     firstName: casual.first_name,
@@ -24,62 +24,27 @@ for (let i = 0; i < 20; i++) {
   userArray.push(user);
 }
 
-let sales1 = null;
-let sales2 = null;
-let customer1 = null;
-let customer1inquiry = null;
-
 async function main() {
   const db = await connection.dbConnection();
-
   await db.dropDatabase();
-
   try {
-    for (let i = 0; i < userArray.length; i++) {
-      const inquiry = await salesInquiry.newInquiry(
-        userArray[i].firstName,
-        userArray[i].lastName,
-        userArray[i].email,
-        userArray[i].phone,
-        userArray[i].subject,
-        userArray[i].message
-      );
-      console.log(inquiry);
+    try {
+      for (let i = 0; i < userArray.length; i++) {
+        const inquiry = await salesInquiry.newInquiry(
+          userArray[i].firstName,
+          userArray[i].lastName,
+          userArray[i].email,
+          userArray[i].phone,
+          userArray[i].subject,
+          userArray[i].message
+        );
+        console.log(inquiry);
+      }
+    } catch (error) {
+      console.log(error);
     }
-  } catch (error) {
-    console.log(error);
-  }
-
-  try {
-    const inquiry1 = await salesInquiry.newInquiry(
-      "Hem",
-      "Patel",
-      "hempatel1234@gmail.com",
-      "9871361803",
-      "Solar Home Rooftop",
-      "I want to install solar system"
-    );
-    console.log(inquiry1);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    const inquiry2 = await salesInquiry.newInquiry(
-      "Jay",
-      "Patel",
-      "patelj1799@gmail.com",
-      "9871361803",
-      "Solar System",
-      "I want to install solar system"
-    );
-    console.log(inquiry2);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    sales1 = await usersData.createUser(
+    // Create Sales Representatives
+    const sales1 = await usersData.createUser(
       "Sales",
       "Account",
       "sales representative",
@@ -87,13 +52,7 @@ async function main() {
       "7698654321",
       "Test@123"
     );
-    console.log(sales1);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    sales2 = await usersData.createUser(
+    const sales2 = await usersData.createUser(
       "Salestwo",
       "Account",
       "sales representative",
@@ -101,125 +60,111 @@ async function main() {
       "7698654321",
       "Test@123"
     );
-    console.log(sales2);
-  } catch (e) {
-    console.log(e);
-  }
 
-  try {
-    const user2 = await usersData.createUser(
-      "Operations",
+    // Create Customer and their Inquiry
+
+    const customer1 = await usersData.createUser(
+      "Customer",
       "Account",
-      "operational manager",
-      "operations@gmail.com",
-      "7698654321",
-      "Test@123"
-    );
-    console.log(user2);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    const onsite = await usersData.createUser(
-      "Onsite",
-      "Account",
-      "onsite team",
-      "onsite@gmail.com",
-      "7698654321",
-      "Test@123"
-    );
-    console.log(onsite);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    const itAdmin1 = await usersData.createUser(
-      "ItAdmin",
-      "Account",
-      "it admin",
-      "it@gmail.com",
-      "7698654321",
-      "Test@123"
-    );
-    console.log(itAdmin1);
-  } catch (e) {
-    console.log(e);
-  }
-
-  try {
-    customer1inquiry = await salesInquiry.newInquiry(
       "customer",
+      "customer@gmail.com",
+      "7698654321",
+      "Test@123"
+    );
+    const customer1Inquiry = await salesInquiry.newInquiry(
+      "Customer",
       "Account",
       "customer@gmail.com",
       "7698654321",
-      "customer",
-      "I want to install solar system"
+      "Solar Home Rooftop",
+      "I want to install a solar system"
     );
-  } catch (e) {
-    console.log(e);
-  }
 
-  try {
-    customer1 = await usersData.createUser(
-      "customertwo",
-      "Account",
-      "customer",
-      "customer2@gmail.com",
-      "7698654321",
-      "Test@123"
+    // Assign Inquiry to a Sales Representative
+    await salesInquiry.assignSalesRepToInquiry(
+      customer1Inquiry._id,
+      sales1._id
     );
-    console.log(customer1);
-  } catch (e) {
-    console.log(e);
-  }
 
-  // try {
-  // 	const assignSalesRep = await salesInquiry.assignSalesRep(customer1inquiry._id, sales1._id);
-  // } catch (e) {
-  // 	console.log(e);
-  // }
-
-  try {
-    const inventory1 = await inventoryData.createNewInventory(
-      "Solar Panel",
-      "892"
+    await salesInquiry.addNewMessage(
+      customer1Inquiry._id,
+      customer1._id,
+      "Hello, I am following up on my solar installation inquiry.",
+      null // No files provided
     );
-    console.log(inventory1);
-  } catch (e) {
-    console.log(e);
-  }
 
-  try {
-    const inventory2 = await inventoryData.createNewInventory(
-      "Battery 15 kWh",
-      "1263"
+    // Add a response from the Sales Representative
+    await salesInquiry.addNewMessage(
+      customer1Inquiry._id,
+      sales1._id,
+      "Thank you for reaching out! I will contact you shortly to discuss your requirements.",
+      null // No files provided
     );
-    console.log(inventory2);
-  } catch (e) {
-    console.log(e);
+
+    try {
+      const user2 = await usersData.createUser(
+        "Operations",
+        "Account",
+        "operational manager",
+        "operations@gmail.com",
+        "7698654321",
+        "Test@123"
+      );
+      console.log(user2);
+    } catch (e) {
+      console.log(e);
+    }
+
+    try {
+      const onsite = await usersData.createUser(
+        "Onsite",
+        "Account",
+        "onsite team",
+        "onsite@gmail.com",
+        "7698654321",
+        "Test@123"
+      );
+      console.log(onsite);
+    } catch (e) {
+      console.log(e);
+    }
+
+    // Create Inventory Items
+    // await inventoryData.createNewInventory("Solar Panel", "892");
+    // await inventoryData.createNewInventory("Battery 15 kWh", "1263");
+    // await inventoryData.createNewInventory("Inverter", "275");
+
+    // Create a Project for the Customer
+    // const project1 = await projectsData.createProject(
+    //   "Customer's Solar Installation",
+    //   customer1._id,
+    //   [
+    //     { name: "Solar Panel", quantity: 10 },
+    //     { name: "Battery 15 kWh", quantity: 4 },
+    //     { name: "Inverter", quantity: 2 },
+    //   ],
+    //   "In Progress",
+    //   sales1._id
+    // );
+
+    // Add Messages to Inquiry
+    // await salesInquiry.addNewMessage(
+    //   customer1Inquiry._id,
+    //   "Customer",
+    //   "Please provide me with the pricing details."
+    // );
+    // await salesInquiry.addNewMessage(
+    //   customer1Inquiry._id,
+    //   "Sales",
+    //   "We will send you the pricing details shortly."
+    // );
+
+    console.log("Database seeding completed successfully.");
+  } catch (error) {
+    console.error("Error during seeding:", error);
+  } finally {
+    await connection.closeConnection();
   }
-
-  try {
-    const inventory3 = await inventoryData.createNewInventory(
-      "Inverter",
-      "275"
-    );
-    console.log(inventory3);
-  } catch (e) {
-    console.log(e);
-  }
-
-  // try {
-  // 	const update = await inventoryData.updateInventoryQuantity("6430e479e2e28496a79dba70", "500");
-  // 	console.log(update);
-  // } catch (e) {
-  // 	console.log(e);
-  // }
-
-  await connection.closeConnection();
-  console.log("Seed Executed");
 }
 
 main();

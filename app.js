@@ -21,28 +21,28 @@ hbs.handlebars.registerHelper("times", function (n, block) {
   return accum;
 });
 
-hbs.handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+hbs.handlebars.registerHelper("ifCond", function (v1, operator, v2, options) {
   switch (operator) {
-    case '==':
-      return (v1 == v2) ? options.fn(this) : options.inverse(this);
-    case '===':
-      return (v1 === v2) ? options.fn(this) : options.inverse(this);
-    case '!=':
-      return (v1 != v2) ? options.fn(this) : options.inverse(this);
-    case '!==':
-      return (v1 !== v2) ? options.fn(this) : options.inverse(this);
-    case '<':
-      return (v1 < v2) ? options.fn(this) : options.inverse(this);
-    case '<=':
-      return (v1 <= v2) ? options.fn(this) : options.inverse(this);
-    case '>':
-      return (v1 > v2) ? options.fn(this) : options.inverse(this);
-    case '>=':
-      return (v1 >= v2) ? options.fn(this) : options.inverse(this);
-    case '&&':
-      return (v1 && v2) ? options.fn(this) : options.inverse(this);
-    case '||':
-      return (v1 || v2) ? options.fn(this) : options.inverse(this);
+    case "==":
+      return v1 == v2 ? options.fn(this) : options.inverse(this);
+    case "===":
+      return v1 === v2 ? options.fn(this) : options.inverse(this);
+    case "!=":
+      return v1 != v2 ? options.fn(this) : options.inverse(this);
+    case "!==":
+      return v1 !== v2 ? options.fn(this) : options.inverse(this);
+    case "<":
+      return v1 < v2 ? options.fn(this) : options.inverse(this);
+    case "<=":
+      return v1 <= v2 ? options.fn(this) : options.inverse(this);
+    case ">":
+      return v1 > v2 ? options.fn(this) : options.inverse(this);
+    case ">=":
+      return v1 >= v2 ? options.fn(this) : options.inverse(this);
+    case "&&":
+      return v1 && v2 ? options.fn(this) : options.inverse(this);
+    case "||":
+      return v1 || v2 ? options.fn(this) : options.inverse(this);
     default:
       return options.inverse(this);
   }
@@ -59,7 +59,7 @@ app.set("view engine", "handlebars");
 
 app.use(
   session({
-    name: "Magicdot - Solar",
+    name: "MagicdotSolar",
     secret: "Team09",
     resave: false,
     saveUninitialized: true,
@@ -83,24 +83,24 @@ client.collectDefaultMetrics({ register });
 
 // Define a custom histogram metric
 const httpRequestDurationMicroseconds = new client.Histogram({
-  name: 'http_request_duration_ms',
-  help: 'Duration of HTTP requests in ms',
-  labelNames: ['method', 'route', 'code'],
-  buckets: [0.1, 5, 15, 50, 100, 300, 500, 1000, 3000]
+  name: "http_request_duration_ms",
+  help: "Duration of HTTP requests in ms",
+  labelNames: ["method", "route", "code"],
+  buckets: [0.1, 5, 15, 50, 100, 300, 500, 1000, 3000],
 });
 
 register.registerMetric(httpRequestDurationMicroseconds);
 
 // Add a route to expose metrics
-app.get('/metrics', async (req, res) => {
-  res.set('Content-Type', register.contentType);
+app.get("/metrics", async (req, res) => {
+  res.set("Content-Type", register.contentType);
   res.end(await register.metrics());
 });
 
 // Middleware to observe request duration
 app.use((req, res, next) => {
   const end = httpRequestDurationMicroseconds.startTimer();
-  res.on('finish', () => {
+  res.on("finish", () => {
     end({ method: req.method, route: req.path, code: res.statusCode });
   });
   next();

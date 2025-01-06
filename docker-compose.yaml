@@ -1,82 +1,82 @@
+version: "3.8"
+services:
+  mongodb:
+    image: "9574872248/mongo"
+    ports:
+      - "27017:27017"
+  code:
+    build:
+      context: .
+      dockerfile: dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    command: /bin/sh -c "npm run seed && npm start"
 # version: "3.8"
+
 # services:
+#   traefik:
+#     image: traefik:v2.5
+#     command:
+#       - "--api.insecure=true"
+#       - "--providers.docker=true"
+#       - "--entrypoints.web.address=:80"
+#       - "--entrypoints.websecure.address=:443"
+#       - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+#       - "--certificatesresolvers.myresolver.acme.email=patelj1799@gmail.com"
+#       - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+#     ports:
+#       - "80:80"
+#       - "443:443"
+#     volumes:
+#       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+#       - "./letsencrypt:/letsencrypt"
+#     restart: always
+
 #   mongodb:
 #     image: "9574872248/mongo"
 #     ports:
 #       - "27017:27017"
-#     # volumes:
-#     # -data:/data/db
+
 #   code:
 #     image: "9574872248/rdot2"
 #     ports:
 #       - "3000:3000"
 #     depends_on:
 #       - mongodb
+#     labels:
+#       - "traefik.enable=true"
+#       - "traefik.http.routers.code.rule=Host(`magicdot.jaypatel.link`)"
+#       - "traefik.http.routers.code.entrypoints=websecure"
+#       - "traefik.http.routers.code.tls.certresolver=myresolver"
+#       - "traefik.http.services.code.loadbalancer.server.port=3000"
+#     command: /bin/sh -c "npm run seed && npm start"
 
-version: "3.8"
+#   prometheus:
+#     image: prom/prometheus:latest
+#     ports:
+#       - "9090:9090"
+#     volumes:
+#       - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#     restart: always
 
-services:
-  traefik:
-    image: traefik:v2.5
-    command:
-      - "--api.insecure=true" # Enable Traefik dashboard for troubleshooting
-      - "--providers.docker=true" # Enable Docker provider
-      - "--entrypoints.web.address=:80" # HTTP entrypoint
-      - "--entrypoints.websecure.address=:443" # HTTPS entrypoint
-      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web" # Use HTTP challenge
-      - "--certificatesresolvers.myresolver.acme.email=your-email@example.com" # Your email for Let's Encrypt registration
-      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Storage for Let's Encrypt data
-    ports:
-      - "80:80" # Expose port 80 for HTTP
-      - "443:443" # Expose port 443 for HTTPS
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro" # Docker socket for Traefik
-      - "./letsencrypt:/letsencrypt" # Volume for Let's Encrypt data
-    restart: always
+#   node-exporter:
+#     image: prom/node-exporter:latest
+#     ports:
+#       - "9100:9100"
+#     restart: always
 
-  mongodb:
-    image: "9574872248/mongo"
-    ports:
-      - "27017:27017"
+#   grafana:
+#     image: grafana/grafana:latest
+#     ports:
+#       - "3001:3000"
+#     environment:
+#       - GF_SECURITY_ADMIN_PASSWORD=admin
+#     volumes:
+#       - grafana-data:/var/lib/grafana
+#     restart: always
 
-  code:
-    image: "9574872248/rdot2"
-    ports:
-      - "3000:3000"
-    depends_on:
-      - mongodb
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.code.rule=Host(`magicdot.jaypatel.link`)"
-      - "traefik.http.routers.code.entrypoints=websecure"
-      - "traefik.http.routers.code.tls.certresolver=myresolver"
-      - "traefik.http.services.code.loadbalancer.server.port=3000"
-    command: /bin/sh -c "npm run seed && npm start"
-
-  prometheus:
-    image: prom/prometheus:latest
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
-    restart: always
-
-  node-exporter:
-    image: prom/node-exporter:latest
-    ports:
-      - "9100:9100"
-    restart: always
-
-  grafana:
-    image: grafana/grafana:latest
-    ports:
-      - "3001:3000"
-    environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - grafana-data:/var/lib/grafana
-    restart: always
-
-volumes:
-  letsencrypt:
-  grafana-data:
+# volumes:
+#   letsencrypt:
+#   grafana-data:
