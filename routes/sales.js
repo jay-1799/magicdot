@@ -70,12 +70,15 @@ router
       const inquiryDetails = await salesInquiryData.getInquiryById(
         req.params.inquiryId
       );
+      console.log("after getting the user role and parameters");
       const userDetails = await usersData.getUserById(
         inquiryDetails.customerId
       );
+      console.log("after getting the customer detaills");
       const messages = await salesInquiryData.getInquiryMessages(
         req.params.inquiryId
       );
+      console.log("after getting the messages");
       for (let message of messages) {
         if (message.userId === req.session.user._id) {
           message.me = true;
@@ -109,6 +112,7 @@ router
         } else {
           throw "Project Status Invalid";
         }
+        console.log("after getting the project detaills");
       }
 
       console.log(projectStatus);

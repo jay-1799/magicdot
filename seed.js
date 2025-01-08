@@ -3,7 +3,10 @@ const salesInquiry = require("./data/salesInquiry");
 const usersData = require("./data/users");
 const projectsData = require("./data/project");
 const inventoryData = require("./data/inventory");
+// const projectRequest = collections.projectRequest;
+const projectRequest = require("./data/projectRequest");
 const casual = require("casual");
+// const { projectRequest } = require("./config/mongoCollections");
 
 // Generate 20 random inquiries
 casual.define("user", function () {
@@ -28,20 +31,17 @@ async function main() {
   const db = await connection.dbConnection();
   await db.dropDatabase();
   try {
-    try {
-      for (let i = 0; i < userArray.length; i++) {
-        const inquiry = await salesInquiry.newInquiry(
-          userArray[i].firstName,
-          userArray[i].lastName,
-          userArray[i].email,
-          userArray[i].phone,
-          userArray[i].subject,
-          userArray[i].message
-        );
-        console.log(inquiry);
-      }
-    } catch (error) {
-      console.log(error);
+    console.log("before 20 inquiry");
+    for (let i = 0; i < userArray.length; i++) {
+      const inquiry = await salesInquiry.newInquiry(
+        userArray[i].firstName,
+        userArray[i].lastName,
+        userArray[i].email,
+        userArray[i].phone,
+        userArray[i].subject,
+        userArray[i].message
+      );
+      // console.log(inquiry);
     }
     // Create Sales Representatives
     const sales1 = await usersData.createUser(
@@ -65,7 +65,7 @@ async function main() {
 
     const customer1 = await usersData.createUser(
       "Customer",
-      "Account",
+      "lastname",
       "customer",
       "customer@gmail.com",
       "7698654321",
@@ -73,7 +73,7 @@ async function main() {
     );
     const customer1Inquiry = await salesInquiry.newInquiry(
       "Customer",
-      "Account",
+      "lastname",
       "customer@gmail.com",
       "7698654321",
       "Solar Home Rooftop",
@@ -101,38 +101,53 @@ async function main() {
       null // No files provided
     );
 
-    try {
-      const user2 = await usersData.createUser(
-        "Operations",
-        "Account",
-        "operational manager",
-        "operations@gmail.com",
-        "7698654321",
-        "Test@123"
-      );
-      console.log(user2);
-    } catch (e) {
-      console.log(e);
-    }
+    const operations = await usersData.createUser(
+      "Operations",
+      "Account",
+      "operational manager",
+      "operations@gmail.com",
+      "7698654321",
+      "Test@123"
+    );
+    const onsite = await usersData.createUser(
+      "Onsite",
+      "Account",
+      "onsite team",
+      "onsite@gmail.com",
+      "7698654321",
+      "Test@123"
+    );
 
-    try {
-      const onsite = await usersData.createUser(
-        "Onsite",
-        "Account",
-        "onsite team",
-        "onsite@gmail.com",
-        "7698654321",
-        "Test@123"
-      );
-      console.log(onsite);
-    } catch (e) {
-      console.log(e);
-    }
+    const projectRequestData = await projectRequest.createProjectRequest(
+      customer1Inquiry._id,
+      500,
+      1200,
+      24000,
+      "34 central ave"
+    );
+    const project = await projectsData.createProjectUsingRequest(
+      projectRequestData,
+      operations._id
+    );
+    // await projectRequest.closeProjectRequest(project._id);
+
+    const updatedCustomer = await usersData.addProjectToUser(
+      project._id,
+      customer1._id
+    );
+    const updatedOperationalManager = await usersData.addProjectToUser(
+      project._id,
+      operations._id
+    );
+    const updatedsalesInquiry = await salesInquiry.addProjectToInquiry(
+      project._id,
+      customer1Inquiry._id
+    );
 
     // Create Inventory Items
-    // await inventoryData.createNewInventory("Solar Panel", "892");
-    // await inventoryData.createNewInventory("Battery 15 kWh", "1263");
-    // await inventoryData.createNewInventory("Inverter", "275");
+    await inventoryData.createNewInventory("Solar Panel", "892");
+    await inventoryData.createNewInventory("Battery 15 kWh", "1263");
+    await inventoryData.createNewInventory("Inverter", "275");
 
     // Create a Project for the Customer
     // const project1 = await projectsData.createProject(
