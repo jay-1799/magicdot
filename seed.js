@@ -125,22 +125,44 @@ async function main() {
       24000,
       "34 central ave"
     );
-    const project = await projectsData.createProjectUsingRequest(
-      projectRequestData,
+    const projectRequestData1 = {
+      subject: "Solar Project1",
+      customerId: customer1._id,
+      salesRepresentative: sales1._id,
+      annualUsage: 1200,
+      annualCost: 24000,
+      address: "34 central ave",
+      status: "approved",
+    };
+    const projectRequestData2 = {
+      subject: "Solar Project 2",
+      customerId: customer1._id,
+      salesRepresentative: sales1._id,
+      annualUsage: 8500,
+      annualCost: 29000,
+      address: "86 summit ave",
+      status: "finished",
+    };
+    const project1 = await projectsData.createProjectUsingRequest(
+      projectRequestData1,
+      operations._id
+    );
+    const project2 = await projectsData.createProjectUsingRequest(
+      projectRequestData2,
       operations._id
     );
     // await projectRequest.closeProjectRequest(project._id);
 
     const updatedCustomer = await usersData.addProjectToUser(
-      project._id,
+      project1._id,
       customer1._id
     );
     const updatedOperationalManager = await usersData.addProjectToUser(
-      project._id,
+      project1._id,
       operations._id
     );
     const updatedsalesInquiry = await salesInquiry.addProjectToInquiry(
-      project._id,
+      project1._id,
       customer1Inquiry._id
     );
 

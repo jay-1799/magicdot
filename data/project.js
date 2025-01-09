@@ -8,7 +8,16 @@ const getApprovedProjects = async () => {
   const approvedProjects = await projectCollection
     .find({ status: "approved" })
     .toArray();
+  console.log(approvedProjects);
   return approvedProjects;
+};
+
+const getFinishedProjects = async () => {
+  const projectCollection = await projects();
+  const finishedProjects = await projectCollection
+    .find({ status: "finished" })
+    .toArray();
+  return finishedProjects;
 };
 
 const getPendingProjects = async () => {
@@ -126,7 +135,7 @@ const createProjectUsingRequest = async (reqObj, operationalManagerId) => {
       "en-US"
     )},${currentDate.toLocaleTimeString("en-US")}`,
     endDate: null,
-    status: "approved",
+    status: reqObj.status,
     constructionCrew: null,
     operationsManager: operationalManagerId,
     projectTasks: [],
@@ -170,6 +179,7 @@ const getProjectTasksByProjectId = async (projectId) => {
 
 module.exports = {
   getApprovedProjects,
+  getFinishedProjects,
   getPendingProjects,
   createProject,
   getAllProjects,
