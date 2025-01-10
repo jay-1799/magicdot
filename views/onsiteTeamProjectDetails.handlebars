@@ -1,104 +1,165 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Project Details Page</title>
-    <style>
-      /* Style for the project details page */
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f1f1f1;
-      }
-      
-      .container {
-        width: 90%;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      
-      h1 {
-        font-size: 36px;
-        color: #333;
-        margin-top: 40px;
-        margin-bottom: 20px;
-      }
-      
-      .project-details {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      }
-      
-      .details-item {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        border-bottom: 1px solid #ddd;
-      }
-      
-      .details-item:last-child {
-        border-bottom: none;
-      }
-      
-      .details-item .label {
-        font-weight: bold;
-        color: #555;
-      }
-      
-      .details-item .value {
-        color: #333;
-      }
-      
-      .btn {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: #fff;
-        text-decoration: none;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-      }
-      
-      .btn:hover {
-        background-color: #0062cc;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>Project Details</h1>
-      <div class="project-details">
-        <div class="details-item">
-          <span class="label">Project Name:</span>
-          <span class="value">{{project.name}}</span>
+<head>
+  <style>
+    .project-details { background-color: #fff; padding: 20px; border-radius:
+    5px; box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); } .details-item { display:
+    flex; justify-content: space-between; align-items: center; padding: 10px;
+    border-bottom: 1px solid #ddd; } .details-item:last-child { border-bottom:
+    none; } .details-item .label { font-weight: bold; color: #555; }
+    .details-item .value { color: #333; }
+  </style>
+</head>
+
+<div class="flex">
+  <div
+    class="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between"
+  >
+    <div class="flex flex-col items-center">
+      <a href="/onsite">
+        <div class="bg-teal-600 text-white p-3 rounded-lg inline-block">
+          <img src="../../public/img/logo_white.svg" style="width:20px" />
         </div>
-        <div class="details-item">
-          <span class="label">Project ID:</span>
-          <span class="value">{{project._id}}</span>
+      </a>
+      <span class="border-b-[1px] border-gray-200 w-full p-2"></span>
+      <a href="/onsite">
+        <div
+          class="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block"
+        >
+          <img src="../../public/img/dashboard.svg" style="width:20px" />
         </div>
-        <div class="details-item">
-          <span class="label">Operational Manager:</span>
-          <span class="value">{{project.operationsManager}}</span>
+      </a>
+      <a href="/onsite/inventory">
+        <div
+          class="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block"
+        >
+          <img src="../../public/img/inventory.svg" style="width:20px" />
         </div>
-        <div class="details-item">
-          <span class="label">Customer:</span>
-          <span class="value">{{project.customer}}</span>
+      </a>
+      <a href="/logout">
+        <div
+          class="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block"
+        >
+          <img src="../../public/img/logout.svg" style="width:20px" />
         </div>
-        <div class="details-item">
-          <span class="label">Start Date:</span>
-          <span class="value">{{project.startDate}}</span>
+      </a>
+    </div>
+  </div>
+  <main class="ml-20 w-full">
+    <main class="bg-gray-100 min-h-screen">
+
+      <div class="grid grid-cols-1 gap-4 p-4">
+        <div class="p-4 space-y-2 grid grid-cols-6 mt-4">
+          <div class="flex col-span-6 space-x-5">
+            {{#times 5}}
+              {{#ifCond @index "<" projectStatuses}}
+                <span class="h-2 w-full rounded-sm bg-green-600"></span>
+              {{/ifCond}}
+              {{#ifCond @index "==" projectStatuses}}
+                <span class="h-2 w-full rounded-sm bg-lime-600"></span>
+              {{/ifCond}}
+              {{#ifCond @index ">" projectStatuses}}
+                <span class="h-2 w-full rounded-sm bg-gray-600"></span>
+              {{/ifCond}}
+
+            {{/times}}
+            {{! <span class="h-2 w-full rounded-sm bg-green-600"></span>
+							<span class="h-2 w-full rounded-sm bg-green-600"></span>
+							<span class="h-2 w-full rounded-sm bg-lime-600"></span>
+							<span class="h-2 w-full rounded-sm bg-gray-600"></span>
+							<span class="h-2 w-full rounded-sm bg-gray-600"></span>
+							<span class="h-2 w-full rounded-sm bg-gray-600"></span> }}
+            {{!-- {{#each projectStatuses}}
+							{{#if (lt @index ../projectStatus)}}
+							<span class="h-2 w-full rounded-sm bg-green-600"></span>
+							{{else if (eq @index ../projectStatus)}}
+							<span class="h-2 w-full rounded-sm bg-lime-600"></span>
+							{{else}}
+							<span class="h-2 w-full rounded-sm bg-gray-600"></span>
+							{{/if}}
+							{{/each}} --}}
+          </div>
+          <div class="flex col-span-6 space-x-7">
+            <span class="h-2 w-full rounded-sm">Initialized</span>
+            <span class="h-2 w-full rounded-sm">Site Inspection</span>
+            <span class="h-2 w-full rounded-sm">Inventory Check</span>
+            <span class="h-2 w-full rounded-sm">Under Construction</span>
+            <span class="h-2 w-full rounded-sm">Final Inspection</span>
+            <span class="h-2 w-full rounded-sm">Finished</span>
+          </div>
         </div>
-        <div class="details-item">
-          <span class="label">End Date:</span>
-          <span class="value">{{project.endDate}}</span>
+      </div>
+
+      <div class="p-4 grid md:grid-cols-3 grid-cols-1 gap-4">
+        <div
+          class="w-full md:col-span-2 relative lg:h-[70vh] h-[50vh] p-4 border rounded-lg bg-white"
+        >
+          <h1 class="text-3xl font-medium text-teal-600 p-2">Project Tasks</h1>
+          <ul class="h-[55vh] overflow-y-auto">
+            {{#each projectTasksList}}
+              <li>
+                <div class="tasks py-2 px-1 w-full">
+                  <div class="w-full">
+                    <div class="mx-2 order-2 items-start">
+                      <div
+                        class="px-4 py-2 inline-block rounded-lg bg-slate-300 text-black"
+                      >
+                        <span><span class="font-medium">Task added: </span>
+                          {{date}}</span><br />
+                        <span class="">
+                          <span class="font-medium">Task: </span>
+                          <span id="task-text-{{@index}}">{{task}}</span>
+                        </span>
+                      </div>
+                      <button
+                        class="px-4 py-2 bg-teal-500 text-white font-medium rounded-lg hover:bg-teal-600 transition duration-200"
+                        onclick="markAsComplete(this, '{{@index}}')"
+                      >
+                        Mark as Complete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+
         </div>
-        <div class="details-item">
-          <span class="label">Status:</span>
-          <span class="value">{{project.status}}</span>
+        <div
+          class="w-full col-span-1 relative lg:h-[70vh] h-[50vh] p-4 border rounded-lg bg-white overflow-scroll"
+        >
+          <h1 class="text-3xl font-medium text-teal-600 p-2">Project Details</h1>
+          <div class="details-item">
+            <span class="label">Project</span>
+            <span class="value">{{projectDetails.name}}</span>
+          </div>
+
+          <div class="details-item">
+            <span class="label">Address</span>
+            <span class="value">{{projectDetails.address}}</span>
+          </div>
+
+          <div class="details-item">
+            <span class="label">Site Area</span>
+            <span class="value">{{projectDetails.area}} sq. ft.</span>
+          </div>
+
+          <div class="details-item">
+            <span class="label">Annual Usage</span>
+            <span class="value">{{projectDetails.annualUsage}} kWh</span>
+          </div>
+
+          <div class="details-item">
+            <span class="label">Annual Cost</span>
+            <span class="value">${{projectDetails.annualCost}}</span>
+          </div>
+
+          <div class="details-item">
+            <span class="label">Address</span>
+            <span class="value">{{projectDetails.address}}</span>
+          </div>
+          <br />
+
         </div>
-        <a href="/onsiteTeam" class="btn">Back to Dashboard</a>
-        </div>
+      </div>
+    </main>
+  </main>
+</div>

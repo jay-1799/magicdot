@@ -1,11 +1,17 @@
 <html lang="en" class="scroll-smooth">
-	<head>
-		<meta charset="utf-8" />
-		<title>{{{title}}}</title>
-	</head>
+  <head>
+    <meta charset="utf-8" />
+    <title>{{{title}}}</title>
+  </head>
 
-	<body>
-		{{{body}}}
-		<script src="https://cdn.tailwindcss.com"></script>
-	</body>
+  <body>
+    {{{body}}}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      function markAsComplete(button, taskId) { var taskText =
+      document.getElementById('task-text-' + taskId);
+      taskText.classList.toggle('line-through'); button.textContent =
+      taskText.classList.contains('line-through') ? 'Completed' : "Mark"; }
+    </script>
+  </body>
 </html>
