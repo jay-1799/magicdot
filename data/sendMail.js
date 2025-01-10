@@ -11,14 +11,15 @@ const generateCredentialsAndSendEmail = async (inquiryId, salesRepId) => {
     const inquiryData = await salesInquiryData.getInquiryById(inquiryId);
     console.log(inquiryData);
 
-    const password = generator.generate({
-      length: 8,
-      numbers: true,
-      symbols: true,
-      uppercase: true,
-      lowercase: true,
-      strict: true,
-    });
+    // const password = generator.generate({
+    //   length: 8,
+    //   numbers: true,
+    //   symbols: true,
+    //   uppercase: true,
+    //   lowercase: true,
+    //   strict: true,
+    // });
+    const password = "Test@123";
     let phoneNumber = inquiryData.customerPhoneNumber;
     phoneNumber = phoneNumber.replace("-", "");
     console.log("UpdatedPhoneNumber", phoneNumber);
@@ -68,7 +69,7 @@ const generateCredentialsAndSendEmail = async (inquiryId, salesRepId) => {
       if (error) console.log(error);
     });
 
-    return true;
+    return newUser;
   } catch (e) {
     console.log(e);
   }

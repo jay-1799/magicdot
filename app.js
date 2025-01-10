@@ -7,8 +7,14 @@ const app = express();
 
 const configRoutes = require("./routes");
 const exphbars = require("express-handlebars");
+// const Handlebars = require('handlebars');
 
+// // Register 'eq' helper for equality check
 var hbs = exphbars.create({});
+
+hbs.handlebars.registerHelper("eq", function (a, b) {
+  return a === b;
+});
 
 hbs.handlebars.registerHelper("times", function (n, block) {
   var accum = "";

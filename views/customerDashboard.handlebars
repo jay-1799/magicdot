@@ -56,6 +56,7 @@
 			</div>
 
 			<div class="p-4 grid md:grid-cols-5 grid-cols-1 gap-4">
+			
 				<div class="w-full md:col-span-4 relative lg:h-[80vh] h-[50vh] p-4 border rounded-lg bg-white">
 					<h1 class="text-3xl font-medium text-teal-600 p-2">Chat with sales representative</h1>
 					<hr />
@@ -112,15 +113,33 @@
 					<h1 class="text-3xl font-medium text-teal-600 p-2">Project Progress</h1>
 					<hr />
 
-					<p>Project Status: {{projectStatuses}}</p>
+					<p>Project Status:
+						 <span
+        class="
+        {{#if (eq projectStatuses 'approved')}}text-blue-600 bg-blue-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'site inspection')}}text-yellow-600 bg-yellow-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'inventory check')}}text-orange-600 bg-orange-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'under construction')}}text-indigo-600 bg-indigo-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'final inspection')}}text-green-600 bg-green-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'finished')}}text-gray-600 bg-gray-100 px-2 py-1 rounded{{/if}}
+        "
+    >
+        {{ projectStatuses }}
+    </span>
+					</p>
 					
 					<div class="mt-4 transition duration-150 hover:scale-105">
-						{{!-- <div class="mt-4 transition duration-150 hover:scale-105">
-							<a href="/customer/payments">
-								<button class="bg-emerald-200 text-emerald-800 py-4 px-2 rounded-lg hover:bg-emerald-300 active:bg-emerald-700 active:text-white w-full">Payment options</button>
-							</a>
-						</div> --}}
 				</div>
+				<div class="w-full bg-gray-200 rounded-full h-4 mt-6">
+    <div
+        class="bg-teal-600 h-4 rounded-full progress-bar"
+        style="width: {{projectWidth}}"
+    	aria-valuenow="{{projectValue}}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        role="progressbar"
+    ></div>
+</div>
 			</div>
 		</main>
 	</main>

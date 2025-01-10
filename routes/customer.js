@@ -43,6 +43,8 @@ router.route("/").get(async (req, res) => {
     }
 
     var projectStatus = 0;
+    let projectValue;
+    let projectWidth;
 
     // If project is created by operational manager
     if (inquiryDetails.isProjectCreated) {
@@ -50,25 +52,56 @@ router.route("/").get(async (req, res) => {
         inquiryDetails.projectId
       );
       console.log(projectDetails.status);
+      projectStatus = projectDetails.status;
 
-      if (projectDetails.status == "approved") {
-        projectStatus = 1;
-      } else if (projectDetails.status == "site inspection") {
-        projectStatus = 2;
-      } else if (projectDetails.status == "inventory check") {
-        projectStatus = 3;
-      } else if (projectDetails.status == "under construction") {
-        projectStatus = 4;
-      } else if (projectDetails.status == "final inspection") {
-        projectStatus = 5;
-      } else if (projectDetails.status == "finished") {
-        projectStatus = 6;
-      } else {
-        throw "Project Status Invalid";
+      switch (projectStatus) {
+        case "approved":
+          projectWidth = "16%";
+          projectValue = "16";
+          break;
+        case "site inspection":
+          projectWidth = "33%";
+          projectValue = "33";
+          break;
+        case "inventory check":
+          projectWidth = "50%";
+          projectValue = "50";
+          break;
+        case "under construction":
+          projectWidth = "66%";
+          projectValue = "66";
+          break;
+        case "final inspection":
+          projectWidth = "83%";
+          projectValue = "83";
+          break;
+        case "finished":
+          projectWidth = "100%";
+          projectValue = "100";
+          break;
+        default:
+          projectWidth = "0%";
+          projectValue = "0";
       }
+
+      // if (projectDetails.status == "approved") {
+      //   projectStatus = 1;
+      // } else if (projectDetails.status == "site inspection") {
+      //   projectStatus = 2;
+      // } else if (projectDetails.status == "inventory check") {
+      //   projectStatus = 3;
+      // } else if (projectDetails.status == "under construction") {
+      //   projectStatus = 4;
+      // } else if (projectDetails.status == "final inspection") {
+      //   projectStatus = 5;
+      // } else if (projectDetails.status == "finished") {
+      //   projectStatus = 6;
+      // } else {
+      //   throw "Project Status Invalid";
+      // }
     }
 
-    console.log(projectStatus);
+    // console.log(projectStatus);
 
     return res.status(200).render("customerDashboard", {
       title: "Customer Dashboard",
@@ -79,10 +112,12 @@ router.route("/").get(async (req, res) => {
       messages: messages,
       greeting: greeting,
       projectStatuses: projectStatus,
+      projectWidth: projectWidth,
+      projectValue: projectValue,
     });
   } catch (e) {
     //return res.status(e.status).render("homepage", { error: e.message });
-    return console.log("Error");
+    return console.log(e);
   }
 });
 

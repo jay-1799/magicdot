@@ -70,6 +70,7 @@ const getUserById = async (userId) => {
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   if (!user) throw { status: 404, message: "User not found" };
   user._id = user._id.toString();
+  // console.log(user);
   return user;
 };
 const getUserByEmail = async (userEmail) => {

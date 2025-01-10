@@ -1,4 +1,4 @@
-<div class="flex">
+{{!-- <div class="flex">
   <div
     class="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between"
   >
@@ -152,21 +152,225 @@
           </div>
         </div>
 
+        
+        <div class="w-full col-span-1 relative lg:h-[80vh] h-[50vh] p-4 border rounded-lg bg-white overflow-auto">
+					<h1 class="text-3xl font-medium text-teal-600 p-2">Project Progress</h1>
+					<hr />
+
+					<p>Project Status: {{projectStatuses}}
+						 <span
+        class="
+        {{#if (eq projectStatuses 'approved')}}text-blue-600 bg-blue-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'site inspection')}}text-yellow-600 bg-yellow-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'inventory check')}}text-orange-600 bg-orange-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'under construction')}}text-indigo-600 bg-indigo-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'final inspection')}}text-green-600 bg-green-100 px-2 py-1 rounded{{/if}}
+        {{#if (eq projectStatuses 'finished')}}text-gray-600 bg-gray-100 px-2 py-1 rounded{{/if}}
+        "
+    >
+        {{ projectStatuses }}
+    </span>
+					</p>
+					
+					<div class="mt-4 transition duration-150 hover:scale-105">
+				</div>
+				<div class="w-full bg-gray-200 rounded-full h-4 mt-6">
+    <div
+        class="bg-teal-600 h-4 rounded-full progress-bar"
+        style="width: {{projectWidth}}"
+    	aria-valuenow="{{projectValue}}"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        role="progressbar"
+    ></div>
+    </div>
+      </div>
+    </main>
+  </main>
+</div> --}}
+
+<div class="flex">
+  <div
+    class="fixed w-20 h-screen p-4 bg-white border-r-[1px] flex flex-col justify-between"
+  >
+    <div class="flex flex-col items-center">
+      <a href="/sales">
+        <div class="bg-teal-600 text-white p-3 rounded-lg inline-block">
+          <img src="/public/img/logo_white.svg" style="width:20px" />
+        </div>
+      </a>
+      <span class="border-b-[1px] border-gray-200 w-full p-2"></span>
+      {{#if inquiryStatus}}
+        <a href="/sales/requirementsubmission/{{inquiryDetails._id}}">
+          <div
+            class="bg-emerald-200 hover:bg-emerald-300 cursor-pointer my-4 p-3 rounded-lg inline-block"
+          >
+            <img src="/public/img/form-submission.svg" style="width:20px" />
+          </div>
+        </a>
+      {{else}}
+        <a href="#">
+          <div
+            class="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block"
+          >
+            <img src="/public/img/form-submission.svg" style="width:20px" />
+          </div>
+        </a>
+      {{/if}}
+      <a href="/logout">
         <div
-          class="w-full col-span-2 relative lg:h-[80vh] h-[50vh] p-4 border rounded-lg bg-white overflow-auto"
+          class="bg-gray-100 hover:bg-gray-200 cursor-pointer my-4 p-3 rounded-lg inline-block"
+        >
+          <img src="/public/img/logout.svg" style="width:20px" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <div class="ml-20 w-full">
+    <main class="bg-gray-100 min-h-screen">
+      <div class="grid lg:grid-cols-3 sm:grid-cols-2 gap-4 p-4">
+        <div
+          class="lg:col-span-1 col-span-1 bg-white flex justify-between w-full border p-4 rounded-lg"
+        >
+          <div class="flex flex-col w-full pb-4 pt-2 pl-4">
+            <p class="text-2xl font-bold">{{userDetails.name}}</p>
+            <p class="text-gray-600">Customer Name</p>
+          </div>
+        </div>
+        <div
+          class="lg:col-span-1 col-span-1 bg-white flex justify-between w-full border p-4 rounded-lg"
+        >
+          <div class="flex flex-col w-full pb-4 pt-2 pl-4">
+            <p
+              class="text-2xl font-bold overflow-auto"
+            >{{userDetails.email}}</p>
+            <p class="text-gray-600">Customer Email</p>
+          </div>
+        </div>
+        <div
+          class="col-span-1 bg-white flex justify-between w-full border p-4 rounded-lg"
+        >
+          <div class="flex flex-col w-full pb-4 pt-2 pl-4">
+            <p class="text-2xl font-bold">{{userDetails.phoneNumber}}</p>
+            <p class="text-gray-600">Customer Phone</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-4 grid md:grid-cols-5 grid-cols-1 gap-4">
+        <div
+          {{! class="w-full md:col-span-4 relative lg:h-[80vh] h-full p-4 border rounded-lg bg-white" }}
+          class="w-full md:col-span-4 relative lg:h-[80vh] h-[50vh] p-4 border rounded-lg bg-white"
+        >
+          <h1 class="text-3xl font-medium text-teal-600 p-2">Chat with customer</h1>
+
+          <hr />
+          <div class="chatWindow mt-2">
+            <div class="h-5/6 rounded-t-lg py-2 overflow-y-auto">
+              <ul>
+                <li>
+                  <div class="chat-message my-2 py-2 px-1 w-full">
+                    <div class="flex items-end">
+                      <div
+                        class="flex flex-col space-y-2 max-w-xl mx-2 order-2 items-start"
+                      >
+                        <div><span
+                            class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-slate-300 text-black"
+                          ><strong>Subject:</strong><br
+                            />{{inquiryDetails.subject}}<br /><strong
+                            >Inquiry:</strong><br
+                            />{{inquiryDetails.message}}</span></div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                {{#each messages}}
+                  {{#if me}}
+                    <li>
+                      <div class="chat-message my-2 py-2 px-1">
+                        <div class="flex items-end justify-end">
+                          <div
+                            class="flex flex-col space-y-2 max-w-xl mx-2 order-1 items-end"
+                          >
+                            <span
+                              class="pr-2 text-xs font-light"
+                            >{{date}}</span>
+                            <div><span
+                                class="px-4 py-2 rounded-lg inline-block rounded-br-none bg-emerald-600 text-white"
+                              >{{message}}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  {{else}}
+                    <li>
+                      <div class="chat-message my-2 py-2 px-1 w-full">
+                        <div class="flex items-end">
+                          <div
+                            class="flex flex-col space-y-2 max-w-xl mx-2 order-2 items-start"
+                          >
+                            <span
+                              class="pl-2 text-xs font-light"
+                            >{{date}}</span>
+                            <div><span
+                                class="px-4 py-2 rounded-lg inline-block rounded-bl-none bg-slate-300 text-black"
+                              >{{message}}</span></div>
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+            </div>
+            <div class="h-fit rounded-b-lg pb-0.5">
+              <form
+                action="/sales/inquirydetails/{{inquiryDetails._id}}"
+                method="POST"
+                encType="multipart/form-data"
+              >
+                <div class="flex flex-row justify-between">
+                  <input
+                    type="text"
+                    name="message"
+                    class="w-full px-4 py-2 mt-2 mx-2 mr-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring"
+                  />
+                  <button
+                    type="submit"
+                    class="bg-emerald-700 hover:bg-emerald-600 active:bg-emerald-500 text-white rounded-lg px-4 py-2 mt-2 mx-2 mr-2"
+                  >Send</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="w-full col-span-1 relative lg:h-[80vh] h-[50vh] p-4 border rounded-lg bg-white overflow-auto"
         >
           <h1 class="text-3xl font-medium text-teal-600 p-2">Project Progress</h1>
           <hr />
 
-          <p>Project Status: {{projectStatuses}}</p>
+          <p>
+            Project Status:
+            <span class="{{projectStatusClass}}">
+              {{projectStatuses}}
+            </span>
+          </p>
 
-          {{! <div class="mt-4">
-						<a href="#">
-							<button class="bg-slate-100 py-4 px-2 rounded-lg w-full">Requirements Submitted</button>
-						</a>
-					</div> }}
+          <div class="w-full bg-gray-200 rounded-full h-4 mt-6">
+            <div
+              class="bg-teal-600 h-4 rounded-full progress-bar"
+              style="width: {{projectWidth}}"
+              aria-valuenow="{{projectValue}}"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              role="progressbar"
+            ></div>
+          </div>
         </div>
       </div>
     </main>
-  </main>
+  </div>
 </div>

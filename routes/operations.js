@@ -96,30 +96,32 @@ router.route("/project/:id").get(async (req, res) => {
   try {
     const projectDetails = await projectData.getProjectById(req.params.id);
     console.log(projectDetails.status);
-    var projectStatus = 0;
+    var projectStatus = projectDetails.status;
 
-    if (projectDetails.status == "approved") {
-      projectStatus = 1;
-    } else if (projectDetails.status == "site inspection") {
-      projectStatus = 2;
-    } else if (projectDetails.status == "inventory check") {
-      projectStatus = 3;
-    } else if (projectDetails.status == "under construction") {
-      projectStatus = 4;
-    } else if (projectDetails.status == "final inspection") {
-      projectStatus = 5;
-    } else if (projectDetails.status == "finished") {
-      projectStatus = 6;
-    } else {
-      throw "Project Status Invalid";
-    }
+    // if (projectDetails.status == "approved") {
+    //   projectStatus = 1;
+    // } else if (projectDetails.status == "site inspection") {
+    //   projectStatus = 2;
+    // } else if (projectDetails.status == "inventory check") {
+    //   projectStatus = 3;
+    // } else if (projectDetails.status == "under construction") {
+    //   projectStatus = 4;
+    // } else if (projectDetails.status == "final inspection") {
+    //   projectStatus = 5;
+    // } else if (projectDetails.status == "finished") {
+    //   projectStatus = 6;
+    // } else if (projectDetails.status == "not approved") {
+    //   projectStatus = 0;
+    // } else {
+    //   throw "Project Status Invalid";
+    // }
 
     console.log(projectStatus);
 
     return res.status(200).render("projectDetails", {
       title: "Project Details",
       projectDetails: projectDetails,
-      projectStatuses: projectStatus - 1,
+      projectStatuses: projectStatus,
       projectTasksList: projectDetails.projectTasks,
     });
   } catch (error) {

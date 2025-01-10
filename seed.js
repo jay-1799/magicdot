@@ -5,6 +5,7 @@ const projectsData = require("./data/project");
 const inventoryData = require("./data/inventory");
 // const projectRequest = collections.projectRequest;
 const projectRequest = require("./data/projectRequest");
+const sendMail = require("./data/sendMail");
 const casual = require("casual");
 // const { projectRequest } = require("./config/mongoCollections");
 
@@ -63,14 +64,14 @@ async function main() {
 
     // Create Customer and their Inquiry
 
-    const customer1 = await usersData.createUser(
-      "Customer",
-      "lastname",
-      "customer",
-      "customer@gmail.com",
-      "7698654321",
-      "Test@123"
-    );
+    // const customer1 = await usersData.createUser(
+    //   "Customer",
+    //   "lastname",
+    //   "customer",
+    //   "customer@gmail.com",
+    //   "7698654321",
+    //   "Test@123"
+    // );
     const customer1Inquiry = await salesInquiry.newInquiry(
       "Customer",
       "lastname",
@@ -79,9 +80,7 @@ async function main() {
       "Solar Home Rooftop",
       "I want to install a solar system"
     );
-
-    // Assign Inquiry to a Sales Representative
-    await salesInquiry.assignSalesRepToInquiry(
+    const customer1 = await sendMail.generateCredentialsAndSendEmail(
       customer1Inquiry._id,
       sales1._id
     );
